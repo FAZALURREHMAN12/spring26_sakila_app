@@ -1,6 +1,6 @@
 # Authors: Fazal ur Rehman , Date: 2026-04-21
 import os
-
+#Main configuration class for the Sakila Flask Application
 class Config:
     MYSQL_HOST = os.environ.get('MYSQL_HOST', 'sakila-db-server')
     CONNECTION_TIMEOUT = int(os.environ.get('CONNECTION_TIMEOUT', '30'))
