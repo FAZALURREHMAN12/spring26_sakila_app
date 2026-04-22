@@ -1,4 +1,4 @@
-name: Deployment Workflow
+name: Conditional Deployment Workflow
 
 on:
   push:
@@ -19,13 +19,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Print variables
-        run: echo "Deploying branch ${{ github.ref }} to STAGING"
+        run: echo "Deploying to STAGING"
       - name: Output Job Summary
         run: |
-          echo "### Deployment Summary 🚀" >> $GITHUB_STEP_SUMMARY
-          echo "Successfully simulated deployment to **Staging** environment." >> $GITHUB_STEP_SUMMARY
-      - name: Send Notification
-        run: echo "Slack notification: Deployment to staging successful"
+          echo "### Staging Deployment Successful 🚀" >> $GITHUB_STEP_SUMMARY
+          echo "Successfully simulated deployment to staging environment." >> $GITHUB_STEP_SUMMARY
 
   deploy-production:
     needs: deploy-staging
@@ -34,8 +32,6 @@ jobs:
     steps:
       - name: Simulated Production Deployment
         run: echo "Deploying to PRODUCTION environment"
-      - name: Send Notification
-        run: echo "Slack notification: Deployment to production successful"
       - name: Create GitHub Release
         uses: actions/create-release@v1
         env:
