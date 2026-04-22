@@ -1,0 +1,47 @@
+name: Deployment Workflow
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'config.py'
+      - 'templates/**'
+      - 'static/**'
+      - 'app.py'
+      - 'Dockerfile'
+      - 'requirements.txt'
+      - 'docker-compose.yml'
+
+jobs:
+  deploy-staging:
+    environment: staging
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print variables
+        run: echo "Deploying branch ${{ github.ref }} to STAGING"
+      - name: Output Job Summary
+        run: |
+          echo "### Deployment Summary 🚀" >> $GITHUB_STEP_SUMMARY
+          echo "Successfully simulated deployment to **Staging** environment." >> $GITHUB_STEP_SUMMARY
+      - name: Send Notification
+        run: echo "Slack notification: Deployment to staging successful"
+
+  deploy-production:
+    needs: deploy-staging
+    environment: production
+    runs-on: ubuntu-latest
+    steps:
+      - name: Simulated Production Deployment
+        run: echo "Deploying to PRODUCTION environment"
+      - name: Send Notification
+        run: echo "Slack notification: Deployment to production successful"
+      - name: Create GitHub Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v2026.04.${{ github.run_number }}
+          release_name: Release v2026.04.${{ github.run_number }}
+          draft: false
+          prerelease: false
